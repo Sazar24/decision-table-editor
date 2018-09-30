@@ -35,11 +35,11 @@ class Cell extends React.Component<IProps, any> {
             <Table.Cell textAlign="center">
                 <Dropdown
                     icon="" // TODO: this is so ugly... xD find sth to replace it (The goal is to keep the caret/dropdown-arrow icon to be invisible)
-                    text={allRows[rowIndex][columnIndex]}
+                    text={allRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
                     pointing 
                     // fluid // TODO: make id fluid, but keep text-alignment centered.
                 >
-                    <Dropdown.Menu >
+                    <Dropdown.Menu > 
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.empty)}>empty</Dropdown.Item>
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.notApplicable)}>-</Dropdown.Item>
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.yes)}>yes</Dropdown.Item>
