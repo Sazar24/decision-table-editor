@@ -1,5 +1,6 @@
 import { actionTypes } from "../actions/actionTypes";
 import * as tableActions from '../actions/tableActions';
+import { tableCellValues } from '../models/selectedValues';
 
 export type allRowsType = string[][];
 let allRows: allRowsType = [];
@@ -14,8 +15,8 @@ const initialState = [
     // ["header 7", "row7-cell-1", "row7-cell-2", "row7-cell-3"],
     // ["header 8", "row8-cell-1", "row8-cell-2", "row8-cell-3"],
     // ["header 9", "row9-cell-1", "row9-cell-2", "row9-cell-3","row9-cell-4","row9-cell-5","row9-cell-6","row9-cell-7","row9-cell-8"],
-    ["foo...",""],
-    ["...bar",""],
+    ["foo...", ""],
+    ["...bar", ""],
 ];
 
 allRows = initialState.slice();
@@ -24,25 +25,34 @@ export function tableRows(state: allRowsType = allRows, action: tableActions.IAc
     const newState: allRowsType = state.slice();
 
     switch (action.type) {
-        case actionTypes.CHANGE_CELL_VALUE:
-        if (action.payload.rowNr !== undefined &&
-            action.payload.columnNr !== undefined &&
-            action.payload.cellValue !== undefined  )    
-        // const {rowNr, columnNr}
-            newState[action.payload.rowNr][action.payload.columnNr] = action.payload.cellValue;
+        case actionTypes.CHANGE_CELL_VALUE: // TODO: test me!
+            if (action.payload.rowNr !== undefined &&
+                action.payload.columnNr !== undefined &&
+                action.payload.cellValue !== undefined)
+                // const {rowNr, columnNr}
+                newState[action.payload.rowNr][action.payload.columnNr] = action.payload.cellValue;
             return newState;
 
-        case actionTypes.CREATE_NEW_COLUMN_AT_POSTITION:
+        case actionTypes.CREATE_NEW_COLUMN_AT_END: // TODO: test me!
+            newState.map(rowArray => {
+                rowArray.push(tableCellValues.empty);
+            });
             return newState;
 
-        case actionTypes.CREATE_NEW_COLUMN_AT_POSTITION:
+        case actionTypes.CREATE_NEW_ROW_AT_END: // TODO: test me!
+            const elementsAmmount: number = newState[0].length;
+            const newRow: string[] = []
+            newRow.push("this is new row - edit me");
+            for (let i = 0; i < elementsAmmount - 1; i++)
+                newRow.push(tableCellValues.empty);
+            newState.push(newRow);
             return newState;
 
-        case actionTypes.CREATE_NEW_COLUMN_AT_POSTITION:
-            return newState;
+        // case actionTypes.CREATE_NEW_COLUMN_AT_END:
+        //     return newState;
 
-        case actionTypes.CREATE_NEW_COLUMN_AT_POSTITION:
-            return newState;
+        // case actionTypes.CREATE_NEW_COLUMN_AT_END:
+        //     return newState;
 
         default:
             return state;

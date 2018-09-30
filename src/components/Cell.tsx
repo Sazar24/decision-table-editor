@@ -37,6 +37,7 @@ class Cell extends React.Component<IProps, any> {
                     icon="" // TODO: this is so ugly... xD find sth to replace it (The goal is to keep the caret/dropdown-arrow icon to be invisible)
                     text={allRows[rowIndex][columnIndex]}
                     pointing 
+                    // fluid // TODO: make id fluid, but keep text-alignment centered.
                 >
                     <Dropdown.Menu >
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.empty)}>empty</Dropdown.Item>

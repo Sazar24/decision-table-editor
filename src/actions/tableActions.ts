@@ -24,7 +24,7 @@ export function changeCellValue(columnNumber: number, rowNumber: number, cellVal
 // export function createNewRowAtPosition(rowNumber: number): IAction {
 export function createNewRowAtEnd(): IAction {
     return {
-        type: actionTypes.CREATE_NEW_ROW_AT_POSITION,
+        type: actionTypes.CREATE_NEW_ROW_AT_END,
         payload: {
             // rowNr: rowNumber,
         }
@@ -43,7 +43,7 @@ export function deleteRowByIndex(rowNumber: number): IAction {
 // export function createNewColumnAtPosition(columnNumber: number): IAction {
 export function createNewColumn(): IAction {
     return {
-        type: actionTypes.CREATE_NEW_COLUMN_AT_POSTITION,
+        type: actionTypes.CREATE_NEW_COLUMN_AT_END,
         payload: {
             // columnNr: columnNumber,
         }

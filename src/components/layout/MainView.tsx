@@ -23,7 +23,8 @@ class MainView extends React.Component<IProps> {
                 // style={{ border: "1px gray dashed" }}
                 // textAlign="right"
                 // text={true}
-                fluid={false}
+                textAlign="center"
+                // fluid
             >
                 <MainTable />
                 <Button content="add new column" onClick={() => addNewColumn()} />

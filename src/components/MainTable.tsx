@@ -18,8 +18,8 @@ class MainTable extends React.Component<IProps> {
     render() {
         const { allRows } = this.props;
         return (
-            <Table definition unstackable singleLine striped celled
-                style={{ margin: "0px" }}>
+            <Table definition unstackable singleLine striped celled // style={{ margin: "0px" }}
+            >
                 <CustomisedHeader columnsAmmount={allRows[0].length} />
                 <Table.Body>
                     {allRows.map((row, rowIndex) => {
