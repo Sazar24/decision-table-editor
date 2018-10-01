@@ -37,7 +37,7 @@ class MainView extends React.Component<IProps> {
 
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
-    allRows: state.rows,
+    allRows: state.tableData.conditionsRows,
 })
 
 const mapDistpachToProps = (dispatch: Dispatch) => ({

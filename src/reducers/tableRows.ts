@@ -5,7 +5,15 @@ import { tableCellValues } from '../models/selectedValues';
 export type allRowsType = string[][];
 let allRows: allRowsType = [];
 
-const initialState = [
+
+export interface IMainTableState {
+    headers: string[];
+    conditionsRows: allRowsType;
+    actionRows: allRowsType;
+}
+
+
+allRows = [
     // ["header 1", "row1-cell-1", "row1-cell-2", "row1-cell-3", "row4-cell-4","row5-cell-5","row6-cell-6","row7-cell-7"],
     // ["header 2 dsfljk dslfk jdslfk adskflj sdakjf", "row2-cell-1", "row2-cell-2"],
     // ["header 3", "row3-cell-1", "row3-cell-2"],
@@ -16,13 +24,18 @@ const initialState = [
     // ["header 8", "row8-cell-1", "row8-cell-2", "row8-cell-3"],
     // ["header 9", "row9-cell-1", "row9-cell-2", "row9-cell-3","row9-cell-4","row9-cell-5","row9-cell-6","row9-cell-7","row9-cell-8"],
     ["foo...", ""],
-    ["...bar", ""],
+    ["...bar", "Y"],
 ];
 
-allRows = initialState.slice();
+const initialState: IMainTableState = {
+    headers: [],
+    conditionsRows: allRows,
+    actionRows: []
+}
+// allRows = initialState.slice();
 
-export function tableRows(state: allRowsType = allRows, action: tableActions.IAction): allRowsType {
-    const newState: allRowsType = state.slice();
+export function tableRows(state: IMainTableState = initialState, action: tableActions.IAction): IMainTableState {
+    const newState: IMainTableState = Object.assign({}, state);
 
     switch (action.type) {
         case actionTypes.CHANGE_CELL_VALUE: // TODO: test me!
@@ -30,13 +43,15 @@ export function tableRows(state: allRowsType = allRows, action: tableActions.IAc
                 action.payload.columnNr !== undefined &&
                 action.payload.cellValue !== undefined)
                 // const {rowNr, columnNr}
-                newState[action.payload.rowNr][action.payload.columnNr] = action.payload.cellValue;
+                newState.conditionsRows[action.payload.rowNr][action.payload.columnNr] = action.payload.cellValue;
             return newState;
 
         case actionTypes.CREATE_NEW_COLUMN_AT_END: // TODO: test me!
-            newState.map(rowArray => {
-                rowArray.push(tableCellValues.empty);
-            });
+            // if (newState.conditionsRows[0].length !== newState.actionRows[0].length)
+            //     throw new Error("Ammounts of columns in condtions and action rows are not equal!");
+
+            newState.actionRows.map(rowArray => { rowArray.push(tableCellValues.empty )});
+            newState.conditionsRows.map(rowArray => { rowArray.push(tableCellValues.empty) });
             return newState;
 
         case actionTypes.CREATE_NEW_ROW_AT_END: // TODO: test me!
@@ -45,7 +60,7 @@ export function tableRows(state: allRowsType = allRows, action: tableActions.IAc
             newRow.push("this is new row - edit me");
             for (let i = 0; i < elementsAmmount - 1; i++)
                 newRow.push(tableCellValues.empty);
-            newState.push(newRow);
+            newState.conditionsRows.push(newRow);
             return newState;
 
         // case actionTypes.CREATE_NEW_COLUMN_AT_END:

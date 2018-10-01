@@ -52,7 +52,7 @@ class Cell extends React.Component<IProps, any> {
 };
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
-    allRows: state.rows,
+    allRows: state.tableData.conditionsRows,
 });
 
 const mapDistpachToProps = (dispatch: Dispatch) => ({

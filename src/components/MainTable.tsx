@@ -7,7 +7,7 @@ import Cell from './Cell';
 import CustomisedHeader from './CustomisedHeader';
 
 interface IProps {
-    allRows: IGlobalReduxState["rows"]
+    allRows: IGlobalReduxState["tableData"]["conditionsRows"]
 }
 
 class MainTable extends React.Component<IProps> {
@@ -42,7 +42,7 @@ class MainTable extends React.Component<IProps> {
 };
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
-    allRows: state.rows,
+    allRows: state.tableData.conditionsRows,
 })
 
 export default connect<any, any, any>(mapStateToProps)(MainTable);
