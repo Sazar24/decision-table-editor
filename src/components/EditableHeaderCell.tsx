@@ -2,20 +2,20 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from "react-redux";
 import * as tableActions from '../actions/tableActions';
-import { Table, Form } from 'semantic-ui-react';
+import { Table, Form, Input, TextArea } from 'semantic-ui-react';
 import { IGlobalReduxState } from '../reducers';
 import { allRowsType } from '../reducers/tableRows';
 
 export interface IEditableHeaderCellProps {
-    // columnIndex: number, // zawsze === 0
     rowIndex: number,
     conditionsRows: allRowsType,
+    changeCellValue: (columnNumber: number, rowNumber: number, cellValue: string) => void;
 }
 
 export interface IEditableHeaderCellState {
     columnIndex: number;
     editModeOn: boolean
-    cellValue: string;
+    cellTextValue: string;
 }
 
 class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEditableHeaderCellState> {
@@ -24,54 +24,67 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
         this.state = {
             columnIndex: 0,
             editModeOn: false,
-            cellValue: '',
+            cellTextValue: '',
         }
     }
-    
+
     handleTurnOnEditMode = () => {
         this.setState({
             editModeOn: true,
         });
     }
-    
+
     componentDidMount() {
-        const thisCellValue :string = this.props.conditionsRows[this.props.rowIndex][0];
+        const thisCellValue: string = this.props.conditionsRows[this.props.rowIndex][0];
         this.setState({
-            cellValue :thisCellValue,
+            cellTextValue: thisCellValue,
         })
     }
 
-    handleSubmit = () =>{
+    handleSubmit = () => {
+        const { rowIndex, conditionsRows, changeCellValue } = this.props;
+        const { columnIndex, cellTextValue } = this.state;
+        this.setState({ editModeOn: false });
+        changeCellValue(columnIndex, rowIndex, cellTextValue);
+    };
 
-    }
+    handleTextChange = (e: any) => {
+        this.setState({
+            cellTextValue: e.target.value,
+        })
+
+
+    };
 
     public render(): any {
         const { rowIndex, conditionsRows } = this.props;
-        const { columnIndex, editModeOn } = this.state;
+        const { columnIndex, editModeOn, cellTextValue } = this.state;
 
         if (!editModeOn)
             return (
                 <Table.Cell onClick={this.handleTurnOnEditMode}>
-                2
-                    {/* {conditionsRows[rowIndex][columnIndex]} */}
+                    {conditionsRows[rowIndex][columnIndex]}
                 </Table.Cell>
             );
 
         if (editModeOn)
             return (
                 <Table.Cell>
-                    <Form onSubmit={this.handleSubmit}>
-                        <Form.Field>
-                            <label>User Input</label>
-                            <input />
-                        </Form.Field>
-                    </Form>
+                    <Form onSubmit={this.handleSubmit} >
 
+                        <Form.Input
+                            rows={1}
+                            autoHeight
+                            value={cellTextValue}
+
+                            placeholder={conditionsRows[rowIndex][columnIndex]}
+                            onChange={this.handleTextChange}
+                        />
+
+                    </Form>
                 </Table.Cell>
             );
     }
-    
-
 }
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
@@ -82,4 +95,4 @@ const mapDistpachToProps = (dispatch: Dispatch) => ({
     changeCellValue: (columnNumber: number, rowNumber: number, cellValue: string) => dispatch(tableActions.changeCellValue(columnNumber, rowNumber, cellValue)),
 });
 
-export default connect<any, any, any>(mapDistpachToProps)(EditableHeaderCell);
+export default connect<any, any, any>(mapStateToProps, mapDistpachToProps)(EditableHeaderCell);

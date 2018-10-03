@@ -22,15 +22,15 @@ class Cell extends React.Component<IProps, any> {
     };
 
     handleClick(value: string) {
-        const { rowIndex, columnIndex} = this.props;
+        const { rowIndex, columnIndex } = this.props;
         this.props.changeCellValue(columnIndex, rowIndex, value);
     };
 
     public render() {
         const { columnIndex, rowIndex, conditionsRows } = this.props;
         if (columnIndex === 0) return (
-            <EditableHeaderCell rowIndex = {rowIndex} />
-            
+            <EditableHeaderCell rowIndex={rowIndex} />
+
             // <Table.Cell> 
             //     {conditionsRows[rowIndex][columnIndex]} {/* TODO: 1. Move it to separatedComponent as EditableCell; 2. Create here text Area */}
             // </Table.Cell>
@@ -39,11 +39,13 @@ class Cell extends React.Component<IProps, any> {
             <Table.Cell textAlign="center">
                 <Dropdown
                     icon="" // TODO: this is so ugly... xD find sth to replace it (The goal is to keep the caret/dropdown-arrow icon to be invisible)
-                    text={conditionsRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
-                    pointing 
-                    // fluid // TODO: make id fluid, but keep text-alignment centered.
+                    // text={conditionsRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
+                    // trigger={<pre>{conditionsRows[rowIndex][columnIndex]}</pre>} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
+                    trigger={conditionsRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
+                    pointing
+                // fluid // TODO: make id fluid, but keep text-alignment centered.
                 >
-                    <Dropdown.Menu > 
+                    <Dropdown.Menu >
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.empty)}>empty</Dropdown.Item>
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.notApplicable)}>-</Dropdown.Item>
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.yes)}>yes</Dropdown.Item>
