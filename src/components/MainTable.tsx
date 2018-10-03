@@ -7,7 +7,7 @@ import Cell from './Cell';
 import CustomisedHeader from './CustomisedHeader';
 
 interface IProps {
-    allRows: IGlobalReduxState["tableData"]["conditionsRows"]
+    conditionsRows: IGlobalReduxState["tableData"]["conditionsRows"]
 }
 
 class MainTable extends React.Component<IProps> {
@@ -16,13 +16,13 @@ class MainTable extends React.Component<IProps> {
     };
 
     render() {
-        const { allRows } = this.props;
+        const { conditionsRows } = this.props;
         return (
             <Table definition unstackable singleLine striped celled // style={{ margin: "0px" }}
             >
-                <CustomisedHeader columnsAmmount={allRows[0].length} />
+                <CustomisedHeader columnsAmmount={conditionsRows[0].length} />
                 <Table.Body>
-                    {allRows.map((row, rowIndex) => {
+                    {conditionsRows.map((row, rowIndex) => {
                         return (
                             <Table.Row key={UUID.v1()}>
                                 {row.map((cellValue, columnIndex) => {
@@ -42,7 +42,7 @@ class MainTable extends React.Component<IProps> {
 };
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
-    allRows: state.tableData.conditionsRows,
+    conditionsRows: state.tableData.conditionsRows.slice()
 })
 
 export default connect<any, any, any>(mapStateToProps)(MainTable);

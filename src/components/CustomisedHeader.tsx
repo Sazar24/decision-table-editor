@@ -9,7 +9,7 @@ export interface IProps {
 export default class CustomisedHeader extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
-    }
+    };
 
     public render() {
         const { columnsAmmount } = this.props;

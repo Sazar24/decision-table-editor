@@ -1,6 +1,6 @@
 import { actionTypes } from './actionTypes';
 
-export interface IAction {
+export interface IAction { // TODO/TBD: use type instead of interface
     type: actionTypes;
     payload: {
         rowNr?: number,
@@ -10,6 +10,7 @@ export interface IAction {
     };
 };
 
+// export function changeCellValue(columnNumber: number, rowNumber: number, cellValue: string): IAction {
 export function changeCellValue(columnNumber: number, rowNumber: number, cellValue: string): IAction {
     return {
         type: actionTypes.CHANGE_CELL_VALUE,
