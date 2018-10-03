@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { tableRows, IMainTableState } from './tableRows';
+import { tableRowsReducer, IMainTableState } from './tableRows';
 
 export interface IGlobalReduxState {
     // rows: allRowsType,
@@ -9,5 +9,5 @@ export interface IGlobalReduxState {
 
 export const reducer = combineReducers<IGlobalReduxState>({
     // rows: tableRows,
-    tableData: tableRows
+    tableData: tableRowsReducer
 })

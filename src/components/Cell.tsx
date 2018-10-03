@@ -6,11 +6,13 @@ import { allRowsType } from '../reducers/tableRows';
 import { Dispatch } from 'redux';
 import { tableCellValues } from '../models/selectedValues';
 import * as tableActions from '../actions/tableActions';
+import EditableHeaderCell from './EditableHeaderCell';
+
 
 export interface IProps {
     columnIndex: number,
     rowIndex: number,
-    allRows: allRowsType,
+    conditionsRows: allRowsType,
     changeCellValue: (rowNumber: number, columnNumber: number, cellValue: string) => void;
 }
 
@@ -25,17 +27,19 @@ class Cell extends React.Component<IProps, any> {
     };
 
     public render() {
-        const { columnIndex, rowIndex, allRows } = this.props;
+        const { columnIndex, rowIndex, conditionsRows } = this.props;
         if (columnIndex === 0) return (
-            <Table.Cell> 
-                {allRows[rowIndex][columnIndex]} {/* TODO: 1. Move it to separatedComponent as EditableCell; 2. Create here text Area */}
-            </Table.Cell>
+            <EditableHeaderCell rowIndex = {rowIndex} />
+            
+            // <Table.Cell> 
+            //     {conditionsRows[rowIndex][columnIndex]} {/* TODO: 1. Move it to separatedComponent as EditableCell; 2. Create here text Area */}
+            // </Table.Cell>
         )
         else return (
             <Table.Cell textAlign="center">
                 <Dropdown
                     icon="" // TODO: this is so ugly... xD find sth to replace it (The goal is to keep the caret/dropdown-arrow icon to be invisible)
-                    text={allRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
+                    text={conditionsRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
                     pointing 
                     // fluid // TODO: make id fluid, but keep text-alignment centered.
                 >
@@ -52,7 +56,7 @@ class Cell extends React.Component<IProps, any> {
 };
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
-    allRows: state.tableData.conditionsRows,
+    conditionsRows: state.tableData.conditionsRows,
 });
 
 const mapDistpachToProps = (dispatch: Dispatch) => ({

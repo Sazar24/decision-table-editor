@@ -1,4 +1,5 @@
 {
+  "defaultSeverity": "warning",
   "extends": [
     "tslint:recommended",
     "tslint-react",
@@ -14,11 +15,17 @@
     "ordered-imports": false,
     "no-console": false,
     "object-literal-sort-keys": false,
-    "no-unused-variable": false,
+    "no-unused-variable": [ false ],
     "jsx-no-lambda": false,
     "curly": false,
-    "member-access": [true, "no-public","check-accessor"],
-    "jsx-boolean-value": ["never"]
-  },
-  "defaultSeverity": "warning"
+    "member-access": [
+      true,
+      "no-public",
+      "check-accessor"
+    ],
+    "jsx-boolean-value": [
+      "never"
+    ],
+    "no-empty": false
+  }
 }
