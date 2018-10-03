@@ -62,7 +62,16 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
 
         if (!editModeOn)
             return (
-                <Table.Cell onClick={this.handleTurnOnEditMode}>
+                <Table.Cell
+                    onClick={this.handleTurnOnEditMode}
+                    style={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word",
+                        wordBreak: "keep-all",
+                        textAlign: "justify",
+                        textJustify: "inter-word",
+                        textOverflow: "clip"
+                    }} >
                     {conditionsRows[rowIndex][columnIndex]}
                 </Table.Cell>
             );
@@ -72,7 +81,7 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
                 <Table.Cell>
                     <Form onSubmit={this.handleSubmit} >
 
-                        <Form.Input
+                        <Form.TextArea
                             rows={1}
                             autoHeight
                             value={cellTextValue}
@@ -80,6 +89,7 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
                             placeholder={conditionsRows[rowIndex][columnIndex]}
                             onChange={this.handleTextChange}
                         />
+                        <Form.Button content="zapisz" />
 
                     </Form>
                 </Table.Cell>

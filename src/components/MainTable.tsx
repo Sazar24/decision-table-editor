@@ -18,7 +18,9 @@ class MainTable extends React.Component<IProps> {
     render() {
         const { conditionsRows } = this.props;
         return (
-            <Table definition unstackable singleLine striped celled // style={{ margin: "0px" }}
+            <Table definition unstackable singleLine striped celled 
+            collapsing
+            // style={{ margin: "0px" }}
             >
                 <CustomisedHeader columnsAmmount={conditionsRows[0].length} />
                 <Table.Body>
