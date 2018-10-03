@@ -50,7 +50,7 @@ export function tableRows(state: IMainTableState = initialState, action: tableAc
             // if (newState.conditionsRows[0].length !== newState.actionRows[0].length)
             //     throw new Error("Ammounts of columns in condtions and action rows are not equal!");
 
-            newState.actionRows.map(rowArray => { rowArray.push(tableCellValues.empty )});
+            newState.actionRows.map(rowArray => { rowArray.push(tableCellValues.empty) });
             newState.conditionsRows.map(rowArray => { rowArray.push(tableCellValues.empty) });
             return newState;
 
