@@ -20,11 +20,9 @@ describe.skip('Handling .CREATE-NEW-COLUMN-AT-END ', () => {
     it('handling', () => {
         simulatedOutput = fromTableRowsReducer.tableRowsReducer(initialState, tableActions.createNewColumn());
         // simulatedOutput = fromTableRowsReducer.tableRowsReducer(initialState, tableActions.createNewColumn());
-        console.log(JSON.stringify(simulatedOutput));
 
         expectedOutput.conditionsRows = [["", ""]];
         expectedOutput.actionRows = [["", ""]];
-        // console.log({ expectedOutput });
 
 
         expect(simulatedOutput).toEqual(expectedOutput);

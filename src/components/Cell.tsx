@@ -7,12 +7,15 @@ import { Dispatch } from 'redux';
 import { tableCellValues } from '../models/selectedValues';
 import * as tableActions from '../actions/tableActions';
 import EditableHeaderCell from './EditableHeaderCell';
+import { tableParts } from '../models/tableParts';
 
 
 export interface IProps {
+    whichRows: tableParts;
     columnIndex: number,
     rowIndex: number,
     conditionsRows: allRowsType,
+    actionRows: allRowsType,
     changeCellValue: (rowNumber: number, columnNumber: number, cellValue: string) => void;
 }
 
@@ -27,23 +30,30 @@ class Cell extends React.Component<IProps, any> {
     };
 
     public render() {
-        const { columnIndex, rowIndex, conditionsRows } = this.props;
+        const { columnIndex, rowIndex, conditionsRows, actionRows, whichRows } = this.props;
         if (columnIndex === 0) return (
-            <EditableHeaderCell rowIndex={rowIndex} />
-
-            // <Table.Cell> 
-            //     {conditionsRows[rowIndex][columnIndex]} {/* TODO: 1. Move it to separatedComponent as EditableCell; 2. Create here text Area */}
-            // </Table.Cell>
+            <EditableHeaderCell
+                whichRows={whichRows}
+                rowIndex={rowIndex}
+            />
         )
-        else return (
-            <Table.Cell textAlign="center">
+
+        let cellValueRenderedAsTrigger: any;
+        if (whichRows === tableParts.top) cellValueRenderedAsTrigger = conditionsRows[rowIndex][columnIndex];
+        if (whichRows === tableParts.bottom) {
+            console.log(`actionRows: ${JSON.stringify(actionRows)}, rowIndex: ${rowIndex}, columnIndex: ${columnIndex}, whichRows: ${whichRows} <--normalCell`)
+            cellValueRenderedAsTrigger = actionRows[rowIndex][columnIndex];
+        }
+
+        return (
+            <Table.Cell textAlign="center"
+            // style={{borderTop:"1px solid black"}}
+            >
                 <Dropdown
-                    icon="" // TODO: this is so ugly... xD find sth to replace it (The goal is to keep the caret/dropdown-arrow icon to be invisible)
-                    // text={conditionsRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
-                    // trigger={<pre>{conditionsRows[rowIndex][columnIndex]}</pre>} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
-                    trigger={conditionsRows[rowIndex][columnIndex]} // TODO: Potrzebna stała szerokość czcionki <eng. fixed font width (?)> (albo jakiś zamiennik, żeby się kolumny nie rozszerzały)
+                    icon="" // TODO: this is so ugly... xD find sth to replace it (The goal is to keep the caret/dropdown-arrow icon to be invisible) // Dropdown renders icon anyway. It is invisible this way, but still clickable, which is good. Disadventage of this solution is that that 'invisible' icon still takes some space (width, to be exact).
+                    /// ...so: TODO: Convert Dropdown to clickable pop-up. 
+                    trigger={cellValueRenderedAsTrigger}
                     pointing
-                // fluid // TODO: make id fluid, but keep text-alignment centered.
                 >
                     <Dropdown.Menu >
                         <Dropdown.Item onClick={() => this.handleClick(tableCellValues.empty)}>empty</Dropdown.Item>
@@ -59,6 +69,7 @@ class Cell extends React.Component<IProps, any> {
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
     conditionsRows: state.tableData.conditionsRows,
+    actionRows: state.tableData.actionRows,
 });
 
 const mapDistpachToProps = (dispatch: Dispatch) => ({

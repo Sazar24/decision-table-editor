@@ -30,10 +30,10 @@ export interface IMainTableState {
 
 export const initialEmptyState: IMainTableState = {
     // headers: [],
-    conditionsRows: [["condtion1"],["xx"]],
+    conditionsRows: [["condtion1", ":)"], ["condition2", " "]],
     // conditionsRows: [], // TODO: poprawić, żeby się nie wysypywało, gdy tablica jest pusta
     // actionRows: [["a"]]
-    actionRows: [[""],["."]]
+    actionRows: [["action1", ""], ["action2", ":}"]]
 }
 
 export function tableRowsReducer(state: IMainTableState = initialEmptyState, action: tableActions.IAction): IMainTableState {

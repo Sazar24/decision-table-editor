@@ -5,10 +5,13 @@ import * as tableActions from '../actions/tableActions';
 import { Table, Form, Input, TextArea } from 'semantic-ui-react';
 import { IGlobalReduxState } from '../reducers';
 import { allRowsType } from '../reducers/tableRows';
+import { tableParts } from '../models/tableParts';
 
 export interface IEditableHeaderCellProps {
+    whichRows: tableParts;
     rowIndex: number,
     conditionsRows: allRowsType,
+    actionRows: allRowsType,
     changeCellValue: (columnNumber: number, rowNumber: number, cellValue: string) => void;
 }
 
@@ -25,21 +28,21 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
             columnIndex: 0,
             editModeOn: false,
             cellTextValue: '',
-        }
-    }
+        };
+    };
 
     handleTurnOnEditMode = () => {
         this.setState({
             editModeOn: true,
         });
-    }
+    };
 
     componentDidMount() {
         const thisCellValue: string = this.props.conditionsRows[this.props.rowIndex][0];
         this.setState({
             cellTextValue: thisCellValue,
-        })
-    }
+        });
+    };
 
     handleSubmit = () => {
         const { rowIndex, conditionsRows, changeCellValue } = this.props;
@@ -51,28 +54,28 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
     handleTextChange = (e: any) => {
         this.setState({
             cellTextValue: e.target.value,
-        })
-
-
+        });
     };
 
     public render(): any {
-        const { rowIndex, conditionsRows } = this.props;
+        const { rowIndex, conditionsRows, actionRows, whichRows } = this.props;
         const { columnIndex, editModeOn, cellTextValue } = this.state;
+        // let thisCellValue :string; 
+
+        let thisCellReduxValue: any;
+        if (whichRows === tableParts.top) thisCellReduxValue = conditionsRows[rowIndex][columnIndex];
+        if (whichRows === tableParts.bottom) {
+            thisCellReduxValue = actionRows[rowIndex][columnIndex];
+        };
+        console.log(` actionRows: ${JSON.stringify(actionRows)}, rowIndex: ${rowIndex}, columnIndex: ${columnIndex}, whichRows: ${whichRows} <--editableHeaderCell , value: ${actionRows[rowIndex][columnIndex]}, actionRows.length: ${actionRows.length}`);
 
         if (!editModeOn)
             return (
                 <Table.Cell
                     onClick={this.handleTurnOnEditMode}
-                    style={{
-                        whiteSpace: "pre-wrap",
-                        wordWrap: "break-word",
-                        wordBreak: "keep-all",
-                        textAlign: "justify",
-                        textJustify: "inter-word",
-                        textOverflow: "clip"
-                    }} >
-                    {conditionsRows[rowIndex][columnIndex]}
+                    style={{ whiteSpace: "pre-wrap", wordWrap: "break-word", wordBreak: "keep-all", textAlign: "justify", textJustify: "inter-word", textOverflow: "clip" }} >
+                    {/* {conditionsRows[rowIndex][columnIndex]} */}
+                    {thisCellReduxValue}
                 </Table.Cell>
             );
 
@@ -80,17 +83,14 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
             return (
                 <Table.Cell>
                     <Form onSubmit={this.handleSubmit} >
-
                         <Form.TextArea
                             rows={1}
                             autoHeight
                             value={cellTextValue}
-
-                            placeholder={conditionsRows[rowIndex][columnIndex]}
+                            placeholder={thisCellReduxValue}
                             onChange={this.handleTextChange}
                         />
                         <Form.Button content="zapisz" />
-
                     </Form>
                 </Table.Cell>
             );
@@ -99,6 +99,7 @@ class EditableHeaderCell extends React.Component<IEditableHeaderCellProps, IEdit
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
     conditionsRows: state.tableData.conditionsRows,
+    actionRows: state.tableData.actionRows,
 });
 
 const mapDistpachToProps = (dispatch: Dispatch) => ({

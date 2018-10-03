@@ -5,9 +5,12 @@ import { IGlobalReduxState } from '../reducers';
 import * as UUID from 'uuid';
 import Cell from './Cell';
 import CustomisedHeader from './CustomisedHeader';
+import TableRowsRenderer from './TableRowsRenderer';
+import { tableParts } from '../models/tableParts';
 
 interface IProps {
-    conditionsRows: IGlobalReduxState["tableData"]["conditionsRows"]
+    conditionsRows: IGlobalReduxState["tableData"]["conditionsRows"],
+    // actionRows: IGlobalReduxState["tableData"]["actionRows"]
 }
 
 class MainTable extends React.Component<IProps> {
@@ -17,14 +20,15 @@ class MainTable extends React.Component<IProps> {
 
     render() {
         const { conditionsRows } = this.props;
+
         return (
-            <Table definition unstackable singleLine striped celled 
-            collapsing
-            // style={{ margin: "0px" }}
-            >
+            <Table definition unstackable singleLine striped celled collapsing >
                 <CustomisedHeader columnsAmmount={conditionsRows[0].length} />
-                <Table.Body>
-                    {conditionsRows.map((row, rowIndex) => {
+                <Table.Body >
+                    <TableRowsRenderer whichRowsRender={tableParts.top} />
+                    <TableRowsRenderer whichRowsRender={tableParts.bottom} />
+                    {/* TODO: replace with sth like: <TableRowsRenderer data = {multiarray:array[][]} topBorderColor = { stringColor | null} />  */}
+                    {/* {conditionsRows.map((row, rowIndex) => {
                         return (
                             <Table.Row key={UUID.v1()}>
                                 {row.map((cellValue, columnIndex) => {
@@ -36,7 +40,7 @@ class MainTable extends React.Component<IProps> {
                                 })}
                             </Table.Row>
                         )
-                    })}
+                    })} */}
                 </Table.Body>
             </Table>
         );
@@ -44,7 +48,8 @@ class MainTable extends React.Component<IProps> {
 };
 
 const mapStateToProps = (state: IGlobalReduxState) => ({
-    conditionsRows: state.tableData.conditionsRows.slice()
+    conditionsRows: state.tableData.conditionsRows.slice(),
+    // actionRows: state.tableData.actionRows.slice(),
 })
 
 export default connect<any, any, any>(mapStateToProps)(MainTable);
